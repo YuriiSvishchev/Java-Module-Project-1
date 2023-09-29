@@ -28,19 +28,23 @@ public class Main {
             }
             System.out.println("Укажите название товара и через пробел его стоимость");
 
-            StringBuilder fullStr = new StringBuilder();
+
             String choice;
             scanner.nextLine();
-
             List<Menu> list = new ArrayList<>();
+
             while (true) {
                 choice = scanner.nextLine();
                 if (choice.equalsIgnoreCase("Завершить")) {
                     break;
-                } else {
+                } else  {
                     try {
                         String priceStr = choice.replaceAll("[\\s+а-яА-Я :]", "");
                         double price = Double.parseDouble(priceStr);
+                        if (price < 0) {
+                            System.out.println("Вы указали отрицательное число. Пожалуйста, введите положительное число.");
+                            continue;
+                        }
                         String name = choice.replace(priceStr, "");
                         Menu item = new Menu(name, price);
                         list.add(item);
@@ -51,15 +55,18 @@ public class Main {
                     }
                 }
             }
+
             double fullPrice = 0.0;
-            StringBuilder str = new StringBuilder();
-            str.append("Добаленные товары:\n");
+            StringBuilder check = new StringBuilder();
+        check.append("Добаленные товары:\n");
             for (Menu item : list) {
                 fullPrice += item.coast;
-                str.append(item.name).append(" - ").append(ending(item.coast)).append("\n");
+                check.append(item.name).append(" - ").append(ending(item.coast)).append("\n");
             }
-            str.append("Гости должны заплатить по: ").append(ending(fullPrice / number));
-            System.out.println(str);
+        check.append("Гости должны заплатить по: ").append(ending(fullPrice / number));
+            System.out.println(check);
+
+        scanner.close();
         }
 
         public static int getNumber(Scanner scanner) {
@@ -86,5 +93,6 @@ public class Main {
             }
             return String.format("%.2f", j) + " рублей";
         }
+
     }
 
